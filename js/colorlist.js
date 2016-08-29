@@ -1,65 +1,65 @@
 var COLOR_OBJ = {
-	"white" : {
+	white : {
 		id : "0",
 		color : "#FFFFFF"
 	},
-	"silver" : {
+	silver : {
 		id : "1",
 		color : "#C0C0C0"
 	},
-	"gray" : {
+	gray : {
 		id : "2",
 		color : "#808080"
 	},
-	"black" : {
+	black : {
 		id : "3",
 		color : "#000000"
 	},
-	"red" : {
+	red : {
 		id : "4",
 		color : "#FF0000"
 	},
-	"maroon" : {
+	maroon : {
 		id : "5",
 		color : "#800000"
 	},
-	"yellow" : {
+	yellow : {
 		id : "6",
 		color : "#FFFF00"
 	},
-	"olive" : {
+	olive : {
 		id : "7",
 		color : "#808000"
 	},
-	"lime" : {
+	lime : {
 		id : "8",
 		color : "#00FF00"
 	},
-	"green" : {
+	green : {
 		id : "9",
 		color : "#008000"
 	},
-	"aqua" : {
+	aqua : {
 		id : "10",
 		color : "#00FFFF"
 	},
-	"teal" : {
+	teal : {
 		id : "11",
 		color : "#008080"
 	},
-	"blue" : {
+	blue : {
 		id : "12",
 		color : "#0000FF"
 	},
-	"navy" : {
+	navy : {
 		id : "13",
 		color : "#000080"
 	},
-	"fuschia" : {
+	fuschia : {
 		id : "14",
 		color : "#FF00FF"
 	},
-	"purple" : {
+	purple : {
 		id : "15",
 		color : "800080"
 	}
