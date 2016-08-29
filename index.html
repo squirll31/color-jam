@@ -1,0 +1,208 @@
+﻿<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>color test</title>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css" />
+        <script src="./js/colorlist.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+        <style type="text/css">
+            .colorBox {
+                width: 150px;
+                height: 150px;
+                float: left;
+            }
+            .h-spacer-fieldset{
+                width: 5px;
+            }
+            .colorInput{
+                width: 100px;
+                padding: .3em 1em;
+                vertical-align: middle;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+            #dbgRow{
+                height: 1em;
+            }
+            .text-input-label{
+                vertical-align: middle;
+                font: 13.3333px Arial;
+            }
+            .indvSmaller, .indvBigger, .removeColor{
+                height: inherit;
+            }
+        </style>
+        <script>
+            $(function () {
+                var COLOR_LIST = [];
+                for (var key in COLOR_OBJ) COLOR_LIST.push(key.replace("_", " ").replace("_", " ").replace("_", " "));
+                //todo: change background field
+                var colorCount = 0;
+                var gSize = 150;
+
+                $(".colorBox").hover(function(e){
+                    $(this).first(".hoverPanel").show();
+                }, function(e){
+                    $(this).first(".hoverPanel").hide();
+                });
+                
+                $("#btnClearColors").click(function(e){
+                   e.preventDefault();
+                   $("[id^='colorBox']").each(function(index){
+                       this.remove();
+                       colorCount = colorCount - 1;
+                   });
+                });
+
+                $("#btnAddColor").click(function(e){
+                    e.preventDefault();
+                    var colorVal = $("#newColorInput").val();
+                    var thisColorId = "colorBox" + colorCount; 
+                    var thisColorHoverId = "hoverPanel" + colorCount;
+                    var size = gSize + "px";
+                    var $theNewColorBox = $("<div class='colorBox' id='" + thisColorId + "' style='display: none'></div>");
+                    var $hoverPanelClone = $(".hoverPanel").first().clone();
+
+
+                    $("#dbgRow").text(colorVal + " " + thisColorId + " " + thisColorHoverId);
+
+                    if (COLOR_LIST.indexOf(colorVal) > -1) {
+                        var cleanColorName = colorVal.replace(" ", "_").replace(" ", "_").replace(" ", "_");
+                        var colorName = colorVal;
+                        var colorId = COLOR_OBJ[cleanColorName]["id"];
+                        colorVal = COLOR_OBJ[cleanColorName]["color"];
+                        $theNewColorBox.append(colorName + "<br>" + colorVal + "<br>" + colorId);
+                    } else {
+                        $theNewColorBox.append(colorVal);
+                    }
+                    // set up the new colorbox
+                    $theNewColorBox.css("background-color", colorVal);
+                    $theNewColorBox.css("height", size);
+                    $theNewColorBox.css("width", size);
+                    
+                    // set up hover panel display
+                    $theNewColorBox.hover(function(e){
+                        $hoverPanelClone.show();
+                    }, function(e){
+                        $hoverPanelClone.hide();
+                    });
+
+                    // set up hover panel button events
+                    $hoverPanelClone.find(".removeColor").click(function(e){
+                        $theNewColorBox.remove();
+                    });
+
+                    $hoverPanelClone.find(".indvSmaller").click(function(e){
+                        var oldSize = parseInt($theNewColorBox.css("height").split("px")[0]);
+                        if (oldSize - 25 > 0)
+                        {
+                            var newSize = (oldSize - 25 + "px");
+                            $theNewColorBox.css("height", newSize);
+                            $theNewColorBox.css("width", newSize);
+                        }
+                    });
+
+                    $hoverPanelClone.find(".indvBigger").click(function(e){
+                        var oldSize = parseInt($theNewColorBox.css("height").split("px")[0]);
+                        var newSize = (oldSize + 25) + "px";
+                        $theNewColorBox.css("height", newSize);
+                        $theNewColorBox.css("width", newSize);
+                    });
+
+                    // attach the color box to the dom
+                    $theNewColorBox.appendTo("#containerColorBox");
+                    // attach the hover panel to the dom
+                    $hoverPanelClone.appendTo($theNewColorBox);
+
+                    // now that everything's set up, display
+                    $theNewColorBox.show();
+
+                    colorCount = colorCount + 1;
+                    $("#newColorInput").val('');
+                    $("#newColorInput").focus();
+                });
+
+                $("#btnSmaller").click(function(e){
+                    e.preventDefault();
+                    if (gSize - 25 > 0){
+                        gSize = gSize - 25;
+                        var newSize = gSize + 'px';
+                        $(".colorBox").css("height", newSize);
+                        $(".colorBox").css("width", newSize);
+                    }
+                });
+
+                $("#btnBigger").click(function(e){
+                    e.preventDefault();
+                    gSize = gSize + 25;
+                    var newSize = gSize + 'px';
+                    $(".colorBox").css("height", newSize);
+                    $(".colorBox").css("width", newSize);
+                });
+
+                $("#btnChangeBgColor").click(function(e){
+                    e.preventDefault();
+                    var newBgColor = $("#txtBgColorInput").val();
+                    $("body").css("background-color", newBgColor);
+                });
+
+                $("#btnResetBgColor").click(function(e){
+                    e.preventDefault();
+                    $("body").css("background-color", "white");
+                });
+
+                $("#newColorInput").autocomplete({
+                    source: COLOR_LIST,
+                    autoFocus: true
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class='hoverPanel' style='display: none'>
+            <button class='indvSmaller ui-button ui-widget ui-corner-all ui-button-icon-only'>
+                <span class="ui-icon ui-icon-minus"></span>
+            </button>
+            <button class='indvBigger ui-button ui-widget ui-corner-all ui-button-icon-only'>
+                <span class="ui-icon ui-icon-plus"></span>
+            </button>
+            <button class='removeColor ui-button ui-widget ui-corner-all ui-button-icon-only'>
+                <span class="ui-icon ui-icon-close"></span>
+            </button>
+        </div>
+        <div id="dbgRow" class="row">
+        </div><br/>
+        <div class="row">
+            <div class="col">
+                <form>
+                    <fieldset>
+                        <label class="text-input-label" for="newColorInput">New Color:</label>
+                        <input type="text" id="newColorInput" class="colorInput ui-autocomplete-input"/>
+                        <button class="ui-button" id="btnAddColor">
+                            Add
+                        </button>
+                        <button class="ui-button" id="btnClearColors">
+                            Clear
+                        </button>
+                        <button class="ui-button" id="btnSmaller">
+                            Smaller
+                        </button>
+                        <button class="ui-button" id="btnBigger">
+                            Bigger
+                        </button>
+                        <label class="text-input-label" for="bgInput">Background Color:</label>
+                        <input type="text" class="colorInput" id="txtBgColorInput"/>
+                        <button id="btnChangeBgColor" class="ui-button">Change Color</button>
+                        <button id="btnResetBgColor" class="ui-button">Reset Color</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div id="containerColorBox">
+            </div>
+        </div>
+    </body>
+</html>
